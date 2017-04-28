@@ -16,7 +16,7 @@ import fr.medoc.main.render.texture.Texture;
 
 public class Renderer {
 	
-	Transform transform = new Transform();
+	public Transform transform = new Transform();
 	int renderingList;
 	Texture texture;
 	ARGBColor color = new ARGBColor(1,1,1,1);

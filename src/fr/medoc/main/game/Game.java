@@ -30,6 +30,7 @@ public class Game {
 		cam.setPerspectiveProjection(75.0f, 0.1f, 1000.0f);
 		
 		rend = new Renderer(new Texture("/textures/grass.png"));
+		rend.transform.eulerAngles.x = -45;
 		rend.setCompileRenderingFunction(new HeightMapRF(15,"/textures/heightmap.png"));
 		
 		rend1 = new Renderer( new Texture("/textures/bube.png",new Vector2f(5,5)));
