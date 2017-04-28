@@ -72,8 +72,8 @@ float lightCalculation()
 float specularCalculation()
 {  
 	//return pow(max(0.0, dot(reflect(-ViewSunLightDir, vViewNormal), normalize(view.xyz))), 100);
-	return pow(max(0.0, dot(reflect(-sunLightDir, vNormal), normalize(WorldView.xyz))), 1);
-	//return 0;
+	//return pow(max(0.0, dot(reflect(-sunLightDir, vNormal), normalize(WorldView.xyz))), 1);
+	return 0;
 }
 
 void main() {
