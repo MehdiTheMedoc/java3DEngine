@@ -8,6 +8,7 @@ public class SkyBoxRenderer extends MeshRenderer{
 	public SkyBoxRenderer(String skyboxTexturePath)
 	{
 		super(OBJMeshRF.skyboxMesh, skyboxTexturePath);
+		this.shaderEffects = 1;
 		shader = Shader.SKYBOX;
 	}
 	
@@ -15,6 +16,7 @@ public class SkyBoxRenderer extends MeshRenderer{
 	public void render()
 	{
 		transform.position = Game.getActiveScene().getActiveCamera().transform.position;
+		
 		super.render();
 	}
 }

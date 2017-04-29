@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL20.glGetShaderi;
 import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL20.glLinkProgram;
 import static org.lwjgl.opengl.GL20.glShaderSource;
+import static org.lwjgl.opengl.GL20.glUniform1i;
 import static org.lwjgl.opengl.GL20.glUniform1f;
 import static org.lwjgl.opengl.GL20.glUniform2f;
 import static org.lwjgl.opengl.GL20.glUniform3f;
@@ -99,6 +100,11 @@ public class Shader {
 		}
 
 		return r;
+	}
+	
+	public void setUniform(String name, int v)
+	{
+		glUniform1i(glGetUniformLocation(program, name), v);
 	}
 	
 	public void setUniform(String name, float v)

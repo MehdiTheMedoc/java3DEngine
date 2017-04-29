@@ -17,6 +17,7 @@ handles :
 
 
 uniform sampler2D tex;
+uniform int effects;
 uniform vec4 mainColor;
 uniform float fogDensity;
 uniform vec3 fogColor;
@@ -76,14 +77,21 @@ float specularCalculation()
 }
 
 void main() {
-	float dist = length(view);
-	float fog = exp(-dist * fogDensity);
-	fog = clamp(fog, 0.0, 1.0);
-	
-	//diffuse color + filtered texture + diffuse light
-    gl_FragColor = mainColor * vColor * depthBlur(tex, texCoord, dist , 100, 100,5) * lightCalculation();
-	//fog
-	gl_FragColor = mix(vec4(fogColor, 1.0), gl_FragColor, vec4(fog));
-	//specular
-	gl_FragColor = mix(gl_FragColor, vec4(1,1,1,1), specularCalculation());
+	if(effects == 0)
+	{
+		float dist = length(view);
+		float fog = exp(-dist * fogDensity);
+		fog = clamp(fog, 0.0, 1.0);
+		
+		//diffuse color + filtered texture + diffuse light
+		gl_FragColor = mainColor * vColor * depthBlur(tex, texCoord, dist , 100, 100,5) * lightCalculation();
+		//fog
+		gl_FragColor = mix(vec4(fogColor, 1.0), gl_FragColor, vec4(fog));
+		//specular
+		gl_FragColor = mix(gl_FragColor, vec4(1,1,1,1), specularCalculation());
+	}
+	else if(effects == 1)
+	{
+		gl_FragColor = mainColor * vColor * texture2D(tex, texCoord);
+	}
 }

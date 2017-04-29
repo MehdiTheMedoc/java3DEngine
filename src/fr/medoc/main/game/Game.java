@@ -46,7 +46,7 @@ public class Game {
 		activeScene.addRenderer(rend);
 		activeScene.addRenderer(rend1);
 		activeScene.addRenderer(rend2);
-		//activeScene.addRenderer(sky);
+		activeScene.addRenderer(sky);
 		activeScene.addGameObject(cam);
 		activeScene.setActiveCamera(cam);
 	}
@@ -54,6 +54,7 @@ public class Game {
 	public void update()
 	{
 		rend.transform.eulerAngles.x += 1;
+		rend2.transform.eulerAngles.z += 1;
 		activeScene.update();
 	}
 	

@@ -12,6 +12,7 @@ import fr.medoc.main.render.texture.Texture;
 public class Renderer {
 	
 	public Transform transform = new Transform();
+	public int shaderEffects = 0; // 0:all; 1:none;
 	int renderingList;
 	Texture texture;
 	ARGBColor color = new ARGBColor(1,1,1,1);
@@ -78,7 +79,7 @@ public class Renderer {
 		
 		mat.store(bufnorm);*/
 		
-		if(shader != null) 
+		/*if(shader != null) 
 		{
 			shader.setUniform("mainColor", color);
 			shader.bind();
@@ -92,8 +93,15 @@ public class Renderer {
 			Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
 			Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
 			Shader.MAIN.bind();
-		}
-		//Shader.MAIN.bind();
+		}*/
+		Shader.MAIN.setUniform("effects", shaderEffects);
+		Shader.MAIN.setUniform("mainColor", color);
+		Shader.MAIN.setUniform("fogColor", Game.getActiveScene().fog_color);
+		Shader.MAIN.setUniform("fogDensity", Game.getActiveScene().fog_density);
+		Shader.MAIN.setUniform("sunLightDir", transform.transformDirection(Game.getActiveScene().sunLightDirection));
+		Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
+		Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
+		Shader.MAIN.bind();
 		texture.bind();
 		
 		glPushMatrix();
