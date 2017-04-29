@@ -2,11 +2,6 @@ package fr.medoc.main.render;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.nio.FloatBuffer;
-
-import org.lwjgl.BufferUtils;
-import org.lwjgl.util.vector.Matrix4f;
-
 import fr.medoc.main.game.Game;
 import fr.medoc.main.math.ARGBColor;
 import fr.medoc.main.math.Transform;
@@ -63,6 +58,7 @@ public class Renderer {
 		/*
 		// Create FloatBuffer that can hold 16 values.
 		FloatBuffer buf = BufferUtils.createFloatBuffer(16);
+		FloatBuffer bufnorm = BufferUtils.createFloatBuffer(16);
 
 		// Get current modelview matrix:
 		glGetFloat(GL_MODELVIEW_MATRIX, buf);
@@ -75,7 +71,12 @@ public class Renderer {
 
 		// Load matrix from buf into the Matrix4f.
 		mat.load(buf);
-		*/ // calcul de la matrice de transformation
+		 // calcul de la matrice de transformation
+		
+		mat.invert();
+		mat.transpose();
+		
+		mat.store(bufnorm);*/
 		
 		if(shader != null) 
 		{
@@ -84,15 +85,15 @@ public class Renderer {
 		}
 		else 
 		{
-
 			Shader.MAIN.setUniform("mainColor", color);
 			Shader.MAIN.setUniform("fogColor", Game.getActiveScene().fog_color);
 			Shader.MAIN.setUniform("fogDensity", Game.getActiveScene().fog_density);
-			Shader.MAIN.setUniform("sunLightDir", Game.getActiveScene().sunLightDirection);
+			Shader.MAIN.setUniform("sunLightDir", transform.transformDirection(Game.getActiveScene().sunLightDirection));
 			Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
 			Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
 			Shader.MAIN.bind();
 		}
+		//Shader.MAIN.bind();
 		texture.bind();
 		
 		glPushMatrix();
@@ -100,6 +101,13 @@ public class Renderer {
 		glCallList(renderingList);
 		glPopMatrix();
 	}
+	
+	
+	public void setShader(Shader shad)
+	{
+		shader = shad;
+	}
+	
 	
 	public void compileRendering()
 	{

@@ -29,9 +29,6 @@ varying vec4 view;
 varying vec3 fragPos;
 varying vec4 vColor;
 varying vec3 vNormal;
-varying vec3 ViewSunLightDir;
-varying vec3 vViewNormal;
-varying vec4 WorldView;
 
 vec4 depthBlur(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, float depth, float iterations)
 {
@@ -67,12 +64,14 @@ vec4 depthFade(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, fl
 float lightCalculation()
 {
 	return clamp(dot(vNormal, -sunLightDir), ambientLightIntensity, 1.0);
+	/*vec3 L = normalize(vec3(0,0,1000) - v);   
+	float Idiff = max(dot(N,L), 0.0);  
+	return clamp(Idiff, 0.0, 1.0);*/
 }
 
 float specularCalculation()
 {  
 	//return pow(max(0.0, dot(reflect(-ViewSunLightDir, vViewNormal), normalize(view.xyz))), 100);
-	//return pow(max(0.0, dot(reflect(-sunLightDir, vNormal), normalize(WorldView.xyz))), 1);
 	return 0;
 }
 
@@ -86,5 +85,5 @@ void main() {
 	//fog
 	gl_FragColor = mix(vec4(fogColor, 1.0), gl_FragColor, vec4(fog));
 	//specular
-	gl_FragColor = mix(gl_FragColor, vec4(1,1,1,1), clamp(specularCalculation(), 0.0, 1.0));
+	gl_FragColor = mix(gl_FragColor, vec4(1,1,1,1), specularCalculation());
 }

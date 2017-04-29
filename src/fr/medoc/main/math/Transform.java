@@ -90,4 +90,12 @@ public class Transform {
 		glRotatef(eulerAngles.z, 0,0,1);
 		glTranslatef(position.x, position.y, position.z);
 	}
+	
+	public Vector3 transformDirection(Vector3 direction)
+	{
+		Vector3 res = Vector3.rotateAround(direction, Vector3.RIGHT, eulerAngles.x);
+		res = Vector3.rotateAround(res, Vector3.UP, eulerAngles.y);
+		res = Vector3.rotateAround(res, Vector3.FORWARD, eulerAngles.z);
+		return res;
+	}
 }
