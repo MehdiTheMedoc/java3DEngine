@@ -9,6 +9,7 @@ handles :
 - parameter fog
 - depthBlur/Fade that blures the texture when distant, to prevent some dirty noisy aspect
 - directionnal sun diffuse Light
+- directionnal sun specular Light
 - ambient diffuse light
 
 @Author Medoc
@@ -19,15 +20,19 @@ handles :
 uniform sampler2D tex;
 uniform int effects;
 uniform vec4 mainColor;
+uniform float hardness;
+uniform float specular;
 uniform float fogDensity;
 uniform vec3 fogColor;
 uniform vec3 sunLightDir;
+uniform float sunLightIntensity;
+uniform vec3 cameraPosition;
 uniform float ambientLightIntensity;
 uniform vec2 texRepeat;
 
 varying vec2 texCoord;
 varying vec4 view;
-varying vec3 fragPos;
+varying vec4 fragPos;
 varying vec4 vColor;
 varying vec3 vNormal;
 
@@ -64,7 +69,7 @@ vec4 depthFade(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, fl
 
 float lightCalculation()
 {
-	return clamp(dot(vNormal, -sunLightDir), ambientLightIntensity, 1.0);
+	return clamp(dot(vNormal, -sunLightDir)*sunLightIntensity, ambientLightIntensity, 2.0);
 	/*vec3 L = normalize(vec3(0,0,1000) - v);   
 	float Idiff = max(dot(N,L), 0.0);  
 	return clamp(Idiff, 0.0, 1.0);*/
@@ -73,7 +78,8 @@ float lightCalculation()
 float specularCalculation()
 {  
 	//return pow(max(0.0, dot(reflect(-ViewSunLightDir, vViewNormal), normalize(view.xyz))), 100);
-	return 0;
+	//return 0;
+	return pow(max(0.0, dot(reflect(-sunLightDir, vNormal), normalize(fragPos.xyz - cameraPosition))), hardness)*specular*sunLightIntensity;
 }
 
 void main() {
@@ -89,6 +95,8 @@ void main() {
 		gl_FragColor = mix(vec4(fogColor, 1.0), gl_FragColor, vec4(fog));
 		//specular
 		gl_FragColor = mix(gl_FragColor, vec4(1,1,1,1), specularCalculation());
+		
+		gl_FragColor = clamp(gl_FragColor,0,1);
 	}
 	else if(effects == 1)
 	{

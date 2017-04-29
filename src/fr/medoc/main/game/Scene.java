@@ -17,6 +17,7 @@ public class Scene {
 	public boolean enableFog = true;
 	public float ambientLightIntensity = 0.25f;
 	public Vector3 sunLightDirection = new Vector3(0,-1,1).normalized();
+	public float sunLightIntensity = 1.5f;
 	
 	public Scene()
 	{

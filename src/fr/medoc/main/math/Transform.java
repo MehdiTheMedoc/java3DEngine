@@ -98,4 +98,13 @@ public class Transform {
 		res = Vector3.rotateAround(res, Vector3.FORWARD, eulerAngles.z);
 		return res;
 	}
+	
+	public Vector3 transformPosition(Vector3 position)
+	{
+		Vector3 res = Vector3.sub(position, this.position);
+		res = Vector3.rotateAround(res, Vector3.RIGHT, eulerAngles.x);
+		res = Vector3.rotateAround(res, Vector3.UP, eulerAngles.y);
+		res = Vector3.rotateAround(res, Vector3.FORWARD, eulerAngles.z);
+		return res;
+	}
 }

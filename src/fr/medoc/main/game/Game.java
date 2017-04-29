@@ -32,11 +32,12 @@ public class Game {
 		cam.setPerspectiveProjection(75.0f, 0.1f, 1000.0f);
 		
 		rend = new Renderer(new Texture("/textures/grass.png"));
-		rend.setCompileRenderingFunction(new HeightMapRF(15,"/textures/heightmap.png"));
+		rend.setCompileRenderingFunction(new HeightMapRF(0.5f,"/textures/heightmap.png"));
 		rend.setShader(null);
 		
 		rend1 = new Renderer( new Texture("/textures/bube.png",new Vector2f(5,5)));
-		rend1.setCompileRenderingFunction(new HeightMapRF(new Vector3(128,0,128),15,"/textures/heightmap.png"));
+		rend1.setCompileRenderingFunction(new HeightMapRF(15,"/textures/heightmap.png"));
+		rend1.transform.position = new Vector3(128,0,128);
 		
 		rend2 = new MeshRenderer("/meshes/suzanne.obj","/textures/suzanne.png",50);
 		rend2.setShader(null);
@@ -53,8 +54,9 @@ public class Game {
 	
 	public void update()
 	{
-		rend.transform.eulerAngles.x += 1;
-		rend2.transform.eulerAngles.z += 1;
+		/*rend.transform.eulerAngles.x += 1;
+		rend2.transform.eulerAngles.z += 1;*/
+		//rend.transform.eulerAngles.y += 1;
 		activeScene.update();
 	}
 	

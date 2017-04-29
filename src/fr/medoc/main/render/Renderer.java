@@ -15,6 +15,8 @@ public class Renderer {
 	public int shaderEffects = 0; // 0:all; 1:none;
 	int renderingList;
 	Texture texture;
+	float shaderHardness = 100;
+	float shaderSpecular = 1f;
 	ARGBColor color = new ARGBColor(1,1,1,1);
 	Shader shader;
 	RenderingFunction renderingFunction;
@@ -96,9 +98,13 @@ public class Renderer {
 		}*/
 		Shader.MAIN.setUniform("effects", shaderEffects);
 		Shader.MAIN.setUniform("mainColor", color);
+		Shader.MAIN.setUniform("hardness", shaderHardness);
+		Shader.MAIN.setUniform("specular", shaderSpecular);
 		Shader.MAIN.setUniform("fogColor", Game.getActiveScene().fog_color);
 		Shader.MAIN.setUniform("fogDensity", Game.getActiveScene().fog_density);
+		Shader.MAIN.setUniform("cameraPosition", transform.transformPosition(Game.getActiveScene().getActiveCamera().transform.position));
 		Shader.MAIN.setUniform("sunLightDir", transform.transformDirection(Game.getActiveScene().sunLightDirection));
+		Shader.MAIN.setUniform("sunLightIntensity", Game.getActiveScene().sunLightIntensity);
 		Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
 		Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
 		Shader.MAIN.bind();
