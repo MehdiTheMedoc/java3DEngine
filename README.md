@@ -7,6 +7,20 @@ the specular light works too.
 
 added a "effect" toggle parameter in order to virtually use several shaders in one, and avoid the issue.
 
+# Features
+- frames and tick gestion
+- scenes gestion
+- transformations on gameobjects
+- heightmap loading and rendering
+- OBJ mesh loading and rendering
+- textures
+- glsl shader handling
+- sun light diffuse
+- sun light specular
+- texture filter
+- skybox
+
 # Next things to do
+- normal mapping
 - collision detection
 - reorganize the code to make it cleaner
