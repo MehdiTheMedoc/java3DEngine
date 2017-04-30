@@ -30,6 +30,7 @@ uniform float sunLightIntensity;
 uniform vec3 cameraPosition;
 uniform float ambientLightIntensity;
 uniform vec2 texRepeat;
+uniform vec2 normalRepeat;
 
 varying vec2 texCoord;
 varying vec4 view;
@@ -87,7 +88,8 @@ float specularCalculation()
 void main() {
 	if(effects == 0)
 	{
-		finalNormal = vNormal + ((texture2D(normal, texCoord)*2).xyz - vec3(1,1,1))*0.1;
+		vec2 normalCoordRepeat = vec2(texCoord.x * normalRepeat.x , texCoord.y * normalRepeat.y);
+		finalNormal = vNormal + ((texture2D(normal, normalCoordRepeat)*2).xyz - vec3(1,1,1))*0.1;
 		float dist = length(view);
 		float fog = exp(-dist * fogDensity);
 		fog = clamp(fog, 0.0, 1.0);

@@ -12,6 +12,7 @@ Boundbox collision detection ! Seems to work properly, just need some testing to
 ok, it wasn't bug free. It's better now that I've a better comprehension of the 3D transformations
 
 added the normal mapping ! It was pretty easy, I'm happy :)
+it needs some testing on the glsl side through.
 
 # Features
 - frames and tick gestion
@@ -29,7 +30,6 @@ added the normal mapping ! It was pretty easy, I'm happy :)
 - normal mapping
 
 # Next things to do
-- improve the normal mapping (uv repeat parameter)
 - less basic collision detection
 - collision handler
 - reorganize the code to make it cleaner

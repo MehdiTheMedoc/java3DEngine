@@ -109,6 +109,7 @@ public class Renderer {
 		Shader.MAIN.setUniform("sunLightIntensity", Game.getActiveScene().sunLightIntensity);
 		Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
 		Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
+		Shader.MAIN.setUniform("normalRepeat", normal.uvRepeat);
 
 		
 		Shader.MAIN.bind();
