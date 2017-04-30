@@ -7,6 +7,8 @@ the specular light works too.
 
 added a "effect" toggle parameter in order to virtually use several shaders in one, and avoid the issue.
 
+Boundbox collision detection ! Seems to work properly, just need some testing to see if it's bug free.
+
 # Features
 - frames and tick gestion
 - scenes gestion
