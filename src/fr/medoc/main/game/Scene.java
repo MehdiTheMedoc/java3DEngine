@@ -2,6 +2,8 @@ package fr.medoc.main.game;
 
 import java.util.ArrayList;
 
+import fr.medoc.main.game.collisions.Collider;
+import fr.medoc.main.game.collisions.collisionDetectionAlgorithm;
 import fr.medoc.main.math.Vector3;
 import fr.medoc.main.render.Camera;
 import fr.medoc.main.render.Renderer;
@@ -12,6 +14,8 @@ public class Scene {
 	private ArrayList<GameObject> gameObjectList = new ArrayList<GameObject>();
 	private Camera activeCamera;
 	
+	private collisionDetectionAlgorithm collisions;
+	
 	public float fog_density = 0.0015f;
 	public Vector3 fog_color = new Vector3(1,1,1);
 	public boolean enableFog = true;
@@ -19,9 +23,9 @@ public class Scene {
 	public Vector3 sunLightDirection = new Vector3(0,-1,1).normalized();
 	public float sunLightIntensity = 1.5f;
 	
-	public Scene()
+	public Scene(collisionDetectionAlgorithm colAlg)
 	{
-		
+		collisions = colAlg;
 	}
 	
 	
@@ -32,6 +36,8 @@ public class Scene {
 		{
 			g.update();
 		}
+		
+		collisions.collisionCheck();
 	}
 	
 	
@@ -67,5 +73,10 @@ public class Scene {
 	public void addRenderer(Renderer rend)
 	{
 		rendererList.add(rend);
+	}
+	
+	public void addCollider(Collider col)
+	{
+		collisions.addCollider(col);
 	}
 }

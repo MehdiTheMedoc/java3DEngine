@@ -19,8 +19,10 @@ added a "effect" toggle parameter in order to virtually use several shaders in o
 - sun light specular
 - texture filter
 - skybox
+- basic boundbox collision detection
 
 # Next things to do
 - normal mapping
-- collision detection
+- collision handler
 - reorganize the code to make it cleaner
+- make some graphs to make the engine layout and logics more understandable
