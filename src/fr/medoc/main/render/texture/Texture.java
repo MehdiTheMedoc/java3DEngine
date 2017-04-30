@@ -1,15 +1,8 @@
 package fr.medoc.main.render.texture;
 
-import static org.lwjgl.opengl.GL11.GL_LINEAR;
-import static org.lwjgl.opengl.GL11.GL_RGBA;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MAG_FILTER;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_MIN_FILTER;
-import static org.lwjgl.opengl.GL11.GL_UNSIGNED_BYTE;
-import static org.lwjgl.opengl.GL11.glBindTexture;
-import static org.lwjgl.opengl.GL11.glGenTextures;
-import static org.lwjgl.opengl.GL11.glTexImage2D;
-import static org.lwjgl.opengl.GL11.glTexParameteri;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
+import static org.lwjgl.opengl.GL20.*;
 
 import java.awt.image.BufferedImage;
 import java.nio.IntBuffer;
@@ -17,12 +10,15 @@ import java.nio.IntBuffer;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+import fr.medoc.main.render.Shader;
+
 public class Texture {
 	private int id;
 	private int width, height;
 	public Vector2f uvRepeat = new Vector2f(1,1);
 	
 	public static final Texture DEFAULT = new Texture("/textures/default.png");
+	public static final Texture DEFAULT_NORMAL = new Texture("/textures/rocksnor.png");
 	
 	public Texture(String path)
 	{
@@ -89,8 +85,11 @@ public class Texture {
 		return height;
 	}
 	
-	public void bind()
+	public void bind(int activeTextureId, String name)
 	{
+		int texLoc = glGetUniformLocation(Shader.MAIN.program, name);
+		glUniform1i(texLoc, activeTextureId);
+		glActiveTexture(GL_TEXTURE0 + activeTextureId);
 		glBindTexture(GL_TEXTURE_2D, id);
 	}
 }

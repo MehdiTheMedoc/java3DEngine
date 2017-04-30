@@ -1,6 +1,7 @@
 package fr.medoc.main.render;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL20.*;
 
 import fr.medoc.main.game.Game;
 import fr.medoc.main.math.ARGBColor;
@@ -13,11 +14,12 @@ public class Renderer {
 	
 	public Transform transform = new Transform();
 	public int shaderEffects = 0; // 0:all; 1:none;
-	int renderingList;
+	private int renderingList;
 	Texture texture;
-	float shaderHardness = 100;
-	float shaderSpecular = 1f;
-	ARGBColor color = new ARGBColor(1,1,1,1);
+	Texture normal = Texture.DEFAULT_NORMAL;
+	public float shaderHardness = 100;
+	public float shaderSpecular = 1f;
+	public ARGBColor color = new ARGBColor(1,1,1,1);
 	Shader shader;
 	RenderingFunction renderingFunction;
 	
@@ -102,13 +104,16 @@ public class Renderer {
 		Shader.MAIN.setUniform("specular", shaderSpecular);
 		Shader.MAIN.setUniform("fogColor", Game.getActiveScene().fog_color);
 		Shader.MAIN.setUniform("fogDensity", Game.getActiveScene().fog_density);
-		Shader.MAIN.setUniform("cameraPosition", transform.transformPosition(Game.getActiveScene().getActiveCamera().transform.position));
-		Shader.MAIN.setUniform("sunLightDir", transform.transformDirection(Game.getActiveScene().sunLightDirection));
+		Shader.MAIN.setUniform("cameraPosition", transform.transformPosition2(Game.getActiveScene().getActiveCamera().transform.position));
+		Shader.MAIN.setUniform("sunLightDir", transform.transformDirection2(Game.getActiveScene().sunLightDirection));
 		Shader.MAIN.setUniform("sunLightIntensity", Game.getActiveScene().sunLightIntensity);
 		Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
 		Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
+
+		
 		Shader.MAIN.bind();
-		texture.bind();
+		texture.bind(0,"tex");
+		normal.bind(1,"normal");
 		
 		glPushMatrix();
 		transform.glTransform();

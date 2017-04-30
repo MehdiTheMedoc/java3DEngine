@@ -18,6 +18,7 @@ handles :
 
 
 uniform sampler2D tex;
+uniform sampler2D normal;
 uniform int effects;
 uniform vec4 mainColor;
 uniform float hardness;
@@ -35,6 +36,7 @@ varying vec4 view;
 varying vec4 fragPos;
 varying vec4 vColor;
 varying vec3 vNormal;
+vec3 finalNormal;
 
 vec4 depthBlur(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, float depth, float iterations)
 {
@@ -69,7 +71,7 @@ vec4 depthFade(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, fl
 
 float lightCalculation()
 {
-	return clamp(dot(vNormal, -sunLightDir)*sunLightIntensity, ambientLightIntensity, 2.0);
+	return clamp(dot(finalNormal, -sunLightDir)*sunLightIntensity, ambientLightIntensity, 2.0);
 	/*vec3 L = normalize(vec3(0,0,1000) - v);   
 	float Idiff = max(dot(N,L), 0.0);  
 	return clamp(Idiff, 0.0, 1.0);*/
@@ -79,12 +81,13 @@ float specularCalculation()
 {  
 	//return pow(max(0.0, dot(reflect(-ViewSunLightDir, vViewNormal), normalize(view.xyz))), 100);
 	//return 0;
-	return pow(max(0.0, dot(reflect(-sunLightDir, vNormal), normalize(fragPos.xyz - cameraPosition))), hardness)*specular*sunLightIntensity;
+	return pow(max(0.0, dot(reflect(-sunLightDir, finalNormal), normalize(fragPos.xyz - cameraPosition))), hardness)*specular*sunLightIntensity;
 }
 
 void main() {
 	if(effects == 0)
 	{
+		finalNormal = vNormal + ((texture2D(normal, texCoord)*2).xyz - vec3(1,1,1))*0.1;
 		float dist = length(view);
 		float fog = exp(-dist * fogDensity);
 		fog = clamp(fog, 0.0, 1.0);

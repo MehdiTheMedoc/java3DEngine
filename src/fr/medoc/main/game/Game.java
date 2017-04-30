@@ -4,6 +4,7 @@ import org.lwjgl.util.vector.Vector2f;
 
 import fr.medoc.main.game.collisions.Collider;
 import fr.medoc.main.game.collisions.matrixcollisiondetection.MatrixCollisionDetection;
+import fr.medoc.main.math.ARGBColor;
 import fr.medoc.main.math.Vector3;
 import fr.medoc.main.render.Camera;
 import fr.medoc.main.render.CustomCamera;
@@ -19,6 +20,9 @@ public class Game {
 	
 	Renderer rend;
 	Renderer rend2;
+	Collider coll2;
+	Collider coll;
+	MeshRenderer rend3;
 	
 	public Game()
 	{
@@ -36,7 +40,7 @@ public class Game {
 		rend = new Renderer(new Texture("/textures/grass.png"));
 		rend.setCompileRenderingFunction(new HeightMapRF(0.5f,"/textures/heightmap.png"));
 		rend.setShader(null);
-		Collider coll = new Collider(rend.transform, new Vector3(128,1,128), new Vector3(64,0,64));
+		coll = new Collider(rend.transform, new Vector3(128,1,128), new Vector3(64,0,64));
 		
 		rend1 = new Renderer( new Texture("/textures/bube.png",new Vector2f(5,5)));
 		rend1.setCompileRenderingFunction(new HeightMapRF(1f,"/textures/heightmap.png"));
@@ -44,7 +48,9 @@ public class Game {
 		
 		rend2 = new MeshRenderer("/meshes/suzanne.obj","/textures/suzanne.png",50);
 		rend2.setShader(null);
-		Collider coll2 = new Collider(rend2.transform, new Vector3(50,50,50));
+		rend2.transform.position = new Vector3(-100,0,0);
+		coll2 = new Collider(rend2.transform, new Vector3(50,50,50));
+		
 		
 		Renderer sky = new SkyBoxRenderer("/textures/skyBoxLayout.png");
 		
@@ -63,8 +69,11 @@ public class Game {
 		/*rend.transform.eulerAngles.x += 1;
 		rend2.transform.eulerAngles.z += 1;*/
 		//rend.transform.eulerAngles.y += 1;
-		rend2.transform.position.x +=1;
-		//System.out.println(rend2.transform.position.x);
+
+		if(coll2.colliderIsColliding())
+			rend2.color = new ARGBColor(1,1,0,0);
+		else
+			rend2.color = new ARGBColor(1,1,1,1);
 		activeScene.update();
 	}
 	

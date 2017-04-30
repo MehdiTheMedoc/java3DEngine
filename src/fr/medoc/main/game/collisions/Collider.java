@@ -1,16 +1,17 @@
 package fr.medoc.main.game.collisions;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import fr.medoc.main.math.Transform;
 import fr.medoc.main.math.Vector3;
 
-public class Collider {
+public class Collider implements Iterable<Collider>{
 	
 	public Transform transform;
 	public BoundingBox boundingBox;
-	protected boolean isColliding = false;
-	protected LinkedList<Collider> others = new LinkedList<Collider>();
+	private boolean isColliding = false;
+	private LinkedList<Collider> others = new LinkedList<Collider>();
 	@SuppressWarnings("unused")
 	private boolean collisionsComputed = false;
 	
@@ -23,6 +24,13 @@ public class Collider {
 	{
 		transform = t;
 		boundingBox = new BoundingBox(this,scale,center);
+	}
+	
+	
+	
+	public boolean colliderIsColliding()
+	{
+		return isColliding;
 	}
 	
 	public void addCollision(Collider other)
@@ -49,4 +57,11 @@ public class Collider {
 		collisionsComputed = false;
 		isColliding = false;
 	}
+
+	@Override
+	public Iterator<Collider> iterator() {
+		return others.iterator();
+	}
+
+
 }

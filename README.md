@@ -9,6 +9,10 @@ added a "effect" toggle parameter in order to virtually use several shaders in o
 
 Boundbox collision detection ! Seems to work properly, just need some testing to see if it's bug free.
 
+ok, it wasn't bug free. It's better now that I've a better comprehension of the 3D transformations
+
+added the normal mapping ! It was pretty easy, I'm happy :)
+
 # Features
 - frames and tick gestion
 - scenes gestion
@@ -22,9 +26,10 @@ Boundbox collision detection ! Seems to work properly, just need some testing to
 - texture filter
 - skybox
 - basic boundbox collision detection
+- normal mapping
 
 # Next things to do
-- normal mapping
+- improve the normal mapping (uv repeat parameter)
 - less basic collision detection
 - collision handler
 - reorganize the code to make it cleaner

@@ -18,7 +18,8 @@ public class BoundingBox {
 	
 	public Vector3 getPosition()
 	{
-		return Vector3.add(center, position);
+		return Vector3.add(collider.transform.transformDirection(center), collider.transform.position);
+		//return Vector3.add(center, collider.transform.position);
 	}
 	
 	
