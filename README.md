@@ -25,6 +25,7 @@ Boundbox collision detection ! Seems to work properly, just need some testing to
 
 # Next things to do
 - normal mapping
+- less basic collision detection
 - collision handler
 - reorganize the code to make it cleaner
 - make some graphs to make the engine layout and logics more understandable
