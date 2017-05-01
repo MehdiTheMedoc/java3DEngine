@@ -37,7 +37,38 @@ varying vec4 view;
 varying vec4 fragPos;
 varying vec4 vColor;
 varying vec3 vNormal;
+
 vec3 finalNormal;
+
+
+mat4 rotationMatrix(vec3 axis, float angle)
+{
+    axis = normalize(axis);
+    float s = sin(angle);
+    float c = cos(angle);
+    float oc = 1.0 - c;
+    
+    return mat4(oc * axis.x * axis.x + c,           oc * axis.x * axis.y - axis.z * s,  oc * axis.z * axis.x + axis.y * s,  0.0,
+                oc * axis.x * axis.y + axis.z * s,  oc * axis.y * axis.y + c,           oc * axis.y * axis.z - axis.x * s,  0.0,
+                oc * axis.z * axis.x - axis.y * s,  oc * axis.y * axis.z + axis.x * s,  oc * axis.z * axis.z + c,           0.0,
+                0.0,                                0.0,                                0.0,                                1.0);
+}
+
+
+vec3 finalNormalCalculation(vec3 normalvec, vec3 normaltexRGB)
+{
+	vec3 orthonormalvec1 = normalize(vec3(1.0/normalvec.x , 1.0/normalvec.y, -2.0/normalvec.z));
+	vec3 orthonormalvec2 = cross(normalvec,orthonormalvec1);
+	
+	/*vec4 res = rotationMatrix(orthonormalvec1, (normaltexRGB.r*2-1)*0.1) * vec4(normalvec,0);
+	res = rotationMatrix(orthonormalvec1, (normaltexRGB.g*2-1)*0.1) * res;*/
+	
+	vec4 res = rotationMatrix(vec3(1,0,0), (normaltexRGB.r*2-1)) * vec4(normalvec,0);
+	res = rotationMatrix(vec3(0,1,0), (normaltexRGB.g*2-1)) * res;
+	
+	return res.xyz;
+}
+
 
 vec4 depthBlur(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, float depth, float iterations)
 {
@@ -89,7 +120,8 @@ void main() {
 	if(effects == 0)
 	{
 		vec2 normalCoordRepeat = vec2(texCoord.x * normalRepeat.x , texCoord.y * normalRepeat.y);
-		finalNormal = vNormal + ((texture2D(normal, normalCoordRepeat)*2).xyz - vec3(1,1,1))*0.1;
+		//finalNormal = normalize( vNormal + (normalize(texture2D(normal, normalCoordRepeat).rgb) * 2 - 1));
+		finalNormal = finalNormalCalculation(vNormal, normalize(texture2D(normal, normalCoordRepeat).rgb));
 		float dist = length(view);
 		float fog = exp(-dist * fogDensity);
 		fog = clamp(fog, 0.0, 1.0);
