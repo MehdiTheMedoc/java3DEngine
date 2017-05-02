@@ -13,6 +13,7 @@ import fr.medoc.main.math.Transform;
  */
 public class GameObject {
 	public Transform transform = new Transform();
+	public String name = "gameobject";
 	
 	public GameObject()
 	{

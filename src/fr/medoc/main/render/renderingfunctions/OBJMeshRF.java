@@ -6,8 +6,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import fr.medoc.main.math.Vector3;
+import fr.medoc.main.render.texture.Texture;
 
 public class OBJMeshRF implements RenderingFunction{
 	
@@ -15,6 +17,7 @@ public class OBJMeshRF implements RenderingFunction{
 	private float scaleFactor;
 	
 	public static final OBJMeshRF skyboxMesh = new OBJMeshRF("/meshes/skybox.obj",500);
+	public static HashMap<String,OBJMeshRF> meshes = new HashMap<String,OBJMeshRF>();
 	
 	public OBJMeshRF(String path)
 	{

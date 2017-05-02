@@ -2,6 +2,8 @@ package fr.medoc.main.render;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import fr.medoc.main.game.Game;
 import fr.medoc.main.math.ARGBColor;
 import fr.medoc.main.math.Transform;
@@ -14,7 +16,9 @@ public class Renderer {
 	public Transform transform = new Transform();
 	public int shaderEffects = 0; // 0:all; 1:none;
 	public Texture texture;
+	public Vector2f texUVRepeat = new Vector2f(1,1);
 	public Texture normal = Texture.DEFAULT_NORMAL;
+	public Vector2f norUVRepeat = new Vector2f(1,1);
 	public float normalFactor = 0;
 	public float shaderHardness = 100;
 	public float shaderSpecular = 1f;
@@ -129,8 +133,8 @@ public class Renderer {
 		Shader.MAIN.setUniform("sunLightDir", transform.transformDirection2(Game.getActiveScene().sunLightDirection));
 		Shader.MAIN.setUniform("sunLightIntensity", Game.getActiveScene().sunLightIntensity);
 		Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
-		Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
-		Shader.MAIN.setUniform("normalRepeat", normal.uvRepeat);
+		Shader.MAIN.setUniform("texRepeat", texUVRepeat);
+		Shader.MAIN.setUniform("normalRepeat", norUVRepeat);
 		Shader.MAIN.setUniform("normalFactor", normalFactor);
 
 		

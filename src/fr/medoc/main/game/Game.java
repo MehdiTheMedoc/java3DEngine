@@ -20,13 +20,15 @@ public class Game {
 	{
 		activeScene = new Scene(new MatrixCollisionDetection(20,20));
 		
+		Texture.loadTextures();
+		
 		Camera cam;
 		
 		cam = new CustomCamera();
 		cam.transform.position.y += 50;
 		cam.setPerspectiveProjection(75.0f, 0.1f, 1000.0f);
 		
-		ColliderRendererGameObject testObj = new ColliderRendererGameObject(new Renderer(new Texture("/textures/rocks.png"),new Texture("/textures/rocksnor.png"),new HeightMapRF(0.5f,"/textures/heightmap.png")), 
+		ColliderRendererGameObject testObj = new ColliderRendererGameObject(new Renderer(Texture.textures.get("rocks"),Texture.textures.get("rocksnor"),new HeightMapRF(0.5f,"/textures/heightmap.png")), 
 				new Vector3(128,1,128), 
 				new Vector3(64,0,64));
 		testObj.renderer.shaderSpecular = 0.5F;
@@ -34,7 +36,7 @@ public class Game {
 		testObj.renderer.normalFactor = 0.25f;
 		testObj.addToScene(activeScene);
 		
-		ColliderRendererGameObject testObj2 = new ColliderRendererGameObject(new Renderer(new Texture("/textures/bube.png", new Vector2f(5,5)),new HeightMapRF(15f,"/textures/heightmap.png")), 
+		ColliderRendererGameObject testObj2 = new ColliderRendererGameObject(new Renderer(new Texture("/textures/bube.png"),new HeightMapRF(5f,"/textures/heightmap.png")), 
 				new Vector3(128,1,128), 
 				new Vector3(64,0,64));
 		testObj2.transform.position = new Vector3(128,0,128);

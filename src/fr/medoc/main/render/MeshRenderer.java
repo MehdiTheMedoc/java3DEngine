@@ -1,9 +1,18 @@
 package fr.medoc.main.render;
 
+import java.util.HashMap;
+
 import fr.medoc.main.render.renderingfunctions.OBJMeshRF;
 import fr.medoc.main.render.texture.Texture;
 
 public class MeshRenderer extends Renderer{
+	
+	public MeshRenderer(OBJMeshRF mesh, Texture tex)
+	{
+		super(tex, mesh);
+	}
+	
+	
 	
 	public MeshRenderer(OBJMeshRF mesh, String texturePath)
 	{
