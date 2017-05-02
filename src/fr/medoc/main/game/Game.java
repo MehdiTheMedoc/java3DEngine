@@ -29,7 +29,7 @@ public class Game {
 		ColliderRendererGameObject testObj = new ColliderRendererGameObject(new Renderer(new Texture("/textures/rocks.png"),new Texture("/textures/rocksnor.png"),new HeightMapRF(0.5f,"/textures/heightmap.png")), 
 				new Vector3(128,1,128), 
 				new Vector3(64,0,64));
-		testObj.renderer.shaderSpecular = 1;
+		testObj.renderer.shaderSpecular = 0.5F;
 		testObj.renderer.shaderHardness = 100;
 		testObj.renderer.normalFactor = 0.25f;
 		testObj.addToScene(activeScene);

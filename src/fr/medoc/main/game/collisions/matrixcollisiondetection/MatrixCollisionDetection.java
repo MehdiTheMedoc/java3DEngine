@@ -3,9 +3,9 @@ package fr.medoc.main.game.collisions.matrixcollisiondetection;
 import java.util.ArrayList;
 
 import fr.medoc.main.game.collisions.Collider;
-import fr.medoc.main.game.collisions.collisionDetectionAlgorithm;
+import fr.medoc.main.game.collisions.CollisionDetectionAlgorithm;
 
-public class MatrixCollisionDetection implements collisionDetectionAlgorithm{
+public class MatrixCollisionDetection implements CollisionDetectionAlgorithm{
 	
 	private ArrayList<Collider> colliders = new ArrayList<Collider>();
 	private ColliderPacket[][] colliderMatrix;

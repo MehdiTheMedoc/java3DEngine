@@ -47,8 +47,8 @@ public class Collider implements Iterable<Collider>{
 		collisionsComputed = true;
 		
 		//DEBUG
-		if(isColliding)
-			System.out.println("colliding !");
+		/*if(isColliding)
+			System.out.println("colliding !");*/
 	}
 	
 	public void reinitiateCollisions()
