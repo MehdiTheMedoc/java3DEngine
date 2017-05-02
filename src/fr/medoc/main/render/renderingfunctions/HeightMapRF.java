@@ -8,7 +8,6 @@ import static org.lwjgl.opengl.GL11.glNormal3f;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glTexCoord2f;
-import static org.lwjgl.opengl.GL11.glTranslatef;
 import static org.lwjgl.opengl.GL11.glVertex3f;
 
 import java.awt.image.BufferedImage;
@@ -21,17 +20,18 @@ public class HeightMapRF implements RenderingFunction{
 	Vector3 position;
 	float yscaleFactor;
 	String file;
+	boolean computeColors = false;
 	
-	public HeightMapRF(Vector3 pos, float yscaleFactor, String file)
+	public HeightMapRF(float yscaleFactor, String file, boolean computeColors)
 	{
-		this.position = pos;
-		this.yscaleFactor = yscaleFactor;
-		this.file = file;
+		this(yscaleFactor, file);
+		this.computeColors = computeColors;
 	}
 	
 	public HeightMapRF(float yscaleFactor, String file)
 	{
-		this(new Vector3(), yscaleFactor, file);
+		this.yscaleFactor = yscaleFactor;
+		this.file = file;
 	}
 	
 	public HeightMapRF(String file)
@@ -41,10 +41,10 @@ public class HeightMapRF implements RenderingFunction{
 	
 	@Override
 	public void OnCall() {
-		GenerateHeightMap(position, yscaleFactor, file);
+		GenerateHeightMap(position, yscaleFactor, file, computeColors);
 	}
 	
-	public static void GenerateHeightMap(Vector3 position, float yscaleFactor , String file)
+	public static void GenerateHeightMap(Vector3 position, float yscaleFactor , String file, boolean computeColors)
 	{
 		BufferedImage map = ImageUtil.loadImage(file);
 		
@@ -55,7 +55,7 @@ public class HeightMapRF implements RenderingFunction{
 		
 		glPushMatrix();
 		
-		glTranslatef(position.x, position.y, position.z);
+		//glTranslatef(position.x, position.y, position.z);
 		
 		glBegin(GL_QUADS);
 		for(int x=0; x<width-1; x++)
@@ -80,6 +80,7 @@ public class HeightMapRF implements RenderingFunction{
 		        glNormal3f(n.x,n.y,n.z);
 		        
 		        glTexCoord2f((float)x/(float)width, (float)(z+1)/(float)width);
+		        if(computeColors)
 		        glColor3f(y_val0/yscaleFactor, y_val0/yscaleFactor, y_val0/yscaleFactor);
 		        glVertex3f(x+0, y_val0, z+1);
 		        
@@ -97,6 +98,7 @@ public class HeightMapRF implements RenderingFunction{
 		        
 		        
 		        glTexCoord2f((float)(x+1)/(float)width, (float)(z+1)/(float)width);
+		        if(computeColors)
 		        glColor3f(y_val1/yscaleFactor, y_val1/yscaleFactor, y_val1/yscaleFactor);
 				glVertex3f(x+1, y_val1, z+1);
 				
@@ -112,6 +114,7 @@ public class HeightMapRF implements RenderingFunction{
 			    glNormal3f(n.x,n.y,n.z);
 				
 				glTexCoord2f((float)(x+1)/(float)width, (float)(z+0)/(float)width);
+				if(computeColors)
 				glColor3f(y_val2/yscaleFactor, y_val2/yscaleFactor, y_val2/yscaleFactor);
 				glVertex3f(x+1, y_val2, z+0);
 				
@@ -128,6 +131,7 @@ public class HeightMapRF implements RenderingFunction{
 			    glNormal3f(n.x,n.y,n.z);
 				
 				glTexCoord2f((float)(x+0)/(float)width, (float)(z+0)/(float)width);
+				if(computeColors)
 				glColor3f(y_val3/yscaleFactor, y_val3/yscaleFactor, y_val3/yscaleFactor);
 				glVertex3f(x+0, y_val3, z+0);
 			}
