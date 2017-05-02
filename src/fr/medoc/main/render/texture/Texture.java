@@ -18,7 +18,7 @@ public class Texture {
 	public Vector2f uvRepeat = new Vector2f(1,1);
 	
 	public static final Texture DEFAULT = new Texture("/textures/default.png");
-	public static final Texture DEFAULT_NORMAL = new Texture("/textures/rocksnor.png");
+	public static final Texture DEFAULT_NORMAL = new Texture("/textures/defaultNor.png");
 	
 	public Texture(String path)
 	{

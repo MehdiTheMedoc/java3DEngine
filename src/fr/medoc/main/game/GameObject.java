@@ -22,4 +22,9 @@ public class GameObject {
 	{
 		
 	}
+	
+	public void addToScene(Scene scene)
+	{
+		scene.addGameObject(this);
+	}
 }

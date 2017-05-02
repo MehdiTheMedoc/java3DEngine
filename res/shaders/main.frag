@@ -19,6 +19,7 @@ handles :
 
 uniform sampler2D tex;
 uniform sampler2D normal;
+uniform float normalFactor;
 uniform int effects;
 uniform vec4 mainColor;
 uniform float hardness;
@@ -57,16 +58,21 @@ mat4 rotationMatrix(vec3 axis, float angle)
 
 vec3 finalNormalCalculation(vec3 normalvec, vec3 normaltexRGB)
 {
-	vec3 orthonormalvec1 = normalize(vec3(1.0/normalvec.x , 1.0/normalvec.y, -2.0/normalvec.z));
-	vec3 orthonormalvec2 = cross(normalvec,orthonormalvec1);
-	
-	/*vec4 res = rotationMatrix(orthonormalvec1, (normaltexRGB.r*2-1)*0.1) * vec4(normalvec,0);
-	res = rotationMatrix(orthonormalvec1, (normaltexRGB.g*2-1)*0.1) * res;*/
-	
-	vec4 res = rotationMatrix(vec3(1,0,0), (normaltexRGB.r*2-1)) * vec4(normalvec,0);
-	res = rotationMatrix(vec3(0,1,0), (normaltexRGB.g*2-1)) * res;
-	
-	return res.xyz;
+	if(normalFactor > 0.1 || normalFactor < -0.1)
+	{
+		vec3 orthonormalvec1 = normalize(vec3(1.0/normalvec.x , 1.0/normalvec.y, -2.0/normalvec.z));
+		vec3 orthonormalvec2 = cross(normalvec,orthonormalvec1);
+		
+		/*vec4 res = rotationMatrix(orthonormalvec1, (normaltexRGB.r*2-1)*0.1) * vec4(normalvec,0);
+		res = rotationMatrix(orthonormalvec1, (normaltexRGB.g*2-1)*0.1) * res;*/
+		
+		vec4 res = rotationMatrix(vec3(1,0,0), (normaltexRGB.g*2-1)*normalFactor) * vec4(normalvec,0);
+		res = rotationMatrix(vec3(0,1,0), (normaltexRGB.r*2-1)*normalFactor) * res;
+		res = rotationMatrix(vec3(0,0,1), ((normaltexRGB.r + normaltexRGB.r)*2 - 2)*normalFactor) * res;
+		
+		return res.xyz;
+	}
+	return normalvec;
 }
 
 

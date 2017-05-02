@@ -1,7 +1,6 @@
 package fr.medoc.main.render;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
 
 import fr.medoc.main.game.Game;
 import fr.medoc.main.math.ARGBColor;
@@ -14,12 +13,13 @@ public class Renderer {
 	
 	public Transform transform = new Transform();
 	public int shaderEffects = 0; // 0:all; 1:none;
-	private int renderingList;
-	Texture texture;
-	Texture normal = Texture.DEFAULT_NORMAL;
+	public Texture texture;
+	public Texture normal = Texture.DEFAULT_NORMAL;
+	public float normalFactor = 0;
 	public float shaderHardness = 100;
 	public float shaderSpecular = 1f;
 	public ARGBColor color = new ARGBColor(1,1,1,1);
+	private int renderingList;
 	Shader shader;
 	RenderingFunction renderingFunction;
 	
@@ -45,16 +45,37 @@ public class Renderer {
 		this.color = color;
 	}
 	
+	public Renderer(Texture tex, Texture nor, ARGBColor color)
+	{
+		this(tex);
+		this.color = color;
+		this.normal = nor;
+	}
+	
 	public Renderer(Texture tex, RenderingFunction func)
 	{
 		texture = tex;
 		setCompileRenderingFunction(func);
 	}
 	
+	public Renderer(Texture tex, Texture nor, RenderingFunction func)
+	{
+		texture = tex;
+		setCompileRenderingFunction(func);
+		normal = nor;
+	}
+	
 	public Renderer(Texture tex, RenderingFunction func, ARGBColor color)
 	{
 		this(tex,func);
 		this.color = color;
+	}
+	
+	public Renderer(Texture tex, Texture nor, RenderingFunction func, ARGBColor color)
+	{
+		this(tex,func);
+		this.color = color;
+		this.normal = nor;
 	}
 	
 	
@@ -110,6 +131,7 @@ public class Renderer {
 		Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
 		Shader.MAIN.setUniform("texRepeat", texture.uvRepeat);
 		Shader.MAIN.setUniform("normalRepeat", normal.uvRepeat);
+		Shader.MAIN.setUniform("normalFactor", normalFactor);
 
 		
 		Shader.MAIN.bind();
