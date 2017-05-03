@@ -5,6 +5,9 @@ import static org.lwjgl.opengl.GL11.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +21,24 @@ public class OBJMeshRF implements RenderingFunction{
 	
 	public static final OBJMeshRF skyboxMesh = new OBJMeshRF("/meshes/skybox.obj",500);
 	public static HashMap<String,OBJMeshRF> meshes = new HashMap<String,OBJMeshRF>();
+	
+	public static void loadMeshes()
+	{
+		String file = Texture.class.getResource("/meshes.txt").getPath();
+		
+		file = "res/meshes.txt";
+		
+		try (BufferedReader reader = Files.newBufferedReader(Paths.get(file))) {
+		    String line = null;
+		    while ((line = reader.readLine()) != null) {
+		        String[] parse = line.split(" ");
+		        OBJMeshRF.meshes.put(parse[0], new OBJMeshRF("/meshes/"+parse[1] , Float.parseFloat(parse[2])));
+		        System.out.println("loaded mesh : " +parse[1]);
+		    }
+		} catch (IOException x) {
+		    System.err.format("IOException: %s%n", x);
+		}
+	}
 	
 	public OBJMeshRF(String path)
 	{

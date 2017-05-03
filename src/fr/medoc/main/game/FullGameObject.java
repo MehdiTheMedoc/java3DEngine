@@ -20,6 +20,12 @@ public class FullGameObject extends ColliderRendererGameObject{
 		super(renderer, colliderScale, colliderCenter);
 	}
 	
+	public static GameObject loadObject(String file, Vector3 position)
+	{
+		GameObject res = loadObject(file);
+		res.transform.position = position.copy();
+		return res;
+	}
 	
 	public static GameObject loadObject(String file)
 	{
@@ -35,6 +41,9 @@ public class FullGameObject extends ColliderRendererGameObject{
 		Vector3 collCenter = new Vector3();
 		OBJMeshRF mesh = null;
 		String heightmaptex = null;
+		float spec = 0.5f;
+		float hard = 100;
+		float norfact = 0.25f;
 		
 		try (BufferedReader reader = Files.newBufferedReader(Paths.get(file))) {
 		    String line = null;
@@ -42,7 +51,7 @@ public class FullGameObject extends ColliderRendererGameObject{
 		        String[] parse = line.split(" ");
 		        if(parse[0].equals("name:"))
 		        	name = parse[1];
-		        if(parse[0].equals("type:")){
+		        else if(parse[0].equals("type:")){
 		        	if(parse[1].equals("colliderRenderer"))
 		        		type = 2;
 		        	if(parse[1].equals("renderer"))
@@ -50,31 +59,40 @@ public class FullGameObject extends ColliderRendererGameObject{
 		        	if(parse[1].equals("gameobject"))
 		        		type = 0;
 		        }
-		        if(parse[0].equals("texture:"))
+		        else if(parse[0].equals("renderer.texture:"))
 		        	tex = Texture.textures.get(parse[1]);
-		        if(parse[0].equals("normal:"))
+		        else if(parse[0].equals("renderer.normal:"))
 		        	nor = Texture.textures.get(parse[1]);
-		        if(parse[0].equals("renderer.type:")){
+		        else if(parse[0].equals("renderer.type:")){
 		        	if(parse[1].equals("heightmap"))
 		        		rendererType = 0;
 		        	if(parse[1].equals("mesh"))
 		        		rendererType = 1;
 		        }
-		        if(parse[0].equals("renderer.mesh:"))
+		        else if(parse[0].equals("renderer.mesh:"))
 		        	mesh = OBJMeshRF.meshes.get(parse[1]);
-		        if(parse[0].equals("renderer.heightmaptex:"))
+		        else if(parse[0].equals("renderer.heightmaptex:"))
 		        	heightmaptex = parse[1];
-		        if(parse[0].equals("renderer.texUVRepeat:"))
+		        else if(parse[0].equals("renderer.texUVRepeat:"))
 		        	texuv = new Vector2f(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]));
-		        if(parse[0].equals("renderer.norUVRepeat:"))
+		        else if(parse[0].equals("renderer.norUVRepeat:"))
 		        	texuv = new Vector2f(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]));
-		        if(parse[0].equals("heightmap.scaleFactor:"))
+		        else if(parse[0].equals("renderer.heightmap.scaleFactor:"))
 		        	hmscalefactor = Float.parseFloat(parse[1]);
-		        if(parse[0].equals("collider.scale:"))
+		        else if(parse[0].equals("renderer.shaderSpecular:"))
+		        	spec = Float.parseFloat(parse[1]);
+		        else if(parse[0].equals("renderer.hardnessSpecular:"))
+		        	hard = Float.parseFloat(parse[1]);
+		        else if(parse[0].equals("renderer.normalFactor:"))
+		        	norfact = Float.parseFloat(parse[1]);
+		        else if(parse[0].equals("collider.scale:"))
 		        	collScale = new Vector3(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]), Float.parseFloat(parse[3]));
-		        if(parse[0].equals("collider.center:"))
+		        else if(parse[0].equals("collider.center:"))
 		        	collCenter = new Vector3(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]), Float.parseFloat(parse[3]));
-
+		        else
+		        {
+		        	System.out.println("unknown parameter : " + parse[0]);
+		        }
 		    }
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);
@@ -98,6 +116,9 @@ public class FullGameObject extends ColliderRendererGameObject{
 			
 			rend.norUVRepeat = noruv;
 			rend.texUVRepeat = texuv;
+			rend.shaderSpecular = spec;
+			rend.shaderHardness = hard;
+			rend.normalFactor = norfact;
 			
 			if(type == 1)
 			{

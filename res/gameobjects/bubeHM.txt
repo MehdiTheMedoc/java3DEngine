@@ -1,0 +1,12 @@
+name: bubeHeightMap
+type: colliderRenderer
+renderer.texture: bube
+renderer.type: heightmap
+renderer.heightmaptex: /textures/heightmap.png
+renderer.texUVRepeat: 5 5
+renderer.heightmap.scaleFactor: 5
+renderer.shaderSpecular: 1
+renderer.shaderHardness: 50
+renderer.normalFactor: 0
+collider.scale: 128 5 128
+collider.center: 64 2.5 64

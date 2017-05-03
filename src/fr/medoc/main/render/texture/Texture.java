@@ -17,22 +17,14 @@ import static org.lwjgl.opengl.GL20.glUniform1i;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
 import java.nio.IntBuffer;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.util.vector.Vector2f;
-
-import fr.medoc.main.math.Vector3;
 import fr.medoc.main.render.Shader;
-import fr.medoc.main.render.renderingfunctions.OBJMeshRF;
 
 public class Texture {
 	private int id;
@@ -53,7 +45,7 @@ public class Texture {
 		    while ((line = reader.readLine()) != null) {
 		        String[] parse = line.split(" ");
 		        Texture.textures.put(parse[0], new Texture("/textures/"+parse[1]));
-		        System.out.println(parse[1]);
+		        System.out.println("loaded texture : " + parse[1]);
 		    }
 		} catch (IOException x) {
 		    System.err.format("IOException: %s%n", x);

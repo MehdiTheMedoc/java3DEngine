@@ -1,10 +1,10 @@
 package fr.medoc.main.render;
-
+/*
 import static org.lwjgl.opengl.EXTFramebufferObject.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL20.*;
-
+*/
 public class ShadowMapping {
 	public void render()
 	{

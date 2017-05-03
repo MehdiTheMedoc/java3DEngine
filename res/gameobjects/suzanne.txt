@@ -1,0 +1,10 @@
+name: suzanne
+type: colliderRenderer
+renderer.texture: suzanne
+renderer.normal: default_nor
+renderer.type: mesh
+renderer.mesh: suzanne
+renderer.shaderSpecular: 1
+renderer.shaderHardness: 100
+renderer.normalFactor: 0
+collider.scale: 50 50 50

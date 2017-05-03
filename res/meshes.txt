@@ -1,0 +1,3 @@
+cube cube.obj 50
+skybox skybox.obj 500
+suzanne suzanne.obj 50

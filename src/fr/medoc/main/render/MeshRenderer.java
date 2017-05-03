@@ -1,7 +1,5 @@
 package fr.medoc.main.render;
 
-import java.util.HashMap;
-
 import fr.medoc.main.render.renderingfunctions.OBJMeshRF;
 import fr.medoc.main.render.texture.Texture;
 

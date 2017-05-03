@@ -11,26 +11,42 @@ Boundbox collision detection ! Seems to work properly, just need some testing to
 
 ok, it wasn't bug free. It's better now that I've a better comprehension of the 3D transformations
 
-added the normal mapping ! It was pretty easy, I'm happy :)
+added the normal mapping ! :)
 it needs some testing on the glsl side through.
 
+added a way to load gameobjects presets and instantiate them in a scene.
+
 # Features
-- frames and tick gestion
-- scenes gestion
-- transformations on gameobjects
-- heightmap loading and rendering
-- OBJ mesh loading and rendering
+
++ graphics
+
 - textures
 - glsl shader handling
 - sun light diffuse
 - sun light specular
 - texture filter
 - skybox
-- basic boundbox collision detection
 - normal mapping
 
++ core
+
+- frames and tick gestion
+- transformations on gameobjects
+
++ programmer side
+
+- heightmap loading and rendering
+- OBJ mesh loading and rendering
+- gameobject preset loading
+
++ gameplay
+
+- scenes gestion
+- basic boundbox collision detection
+
 # Next things to do
+- add a component system with an "update" function, like we can see in unity, so that we could make a gameobject preset and then add it some code without affecting the preset
 - less basic collision detection
 - collision handler
-- reorganize the code to make it cleaner
+- reorganize the code to make it cleaner (for example with the class FullGameObject. I'm not satisfied with it. Plus we need more clever packages layout)
 - make some graphs to make the engine layout and logics more understandable
