@@ -133,7 +133,9 @@ void main() {
 		fog = clamp(fog, 0.0, 1.0);
 		
 		//diffuse color + filtered texture + diffuse light
-		gl_FragColor = mainColor * vColor * depthBlur(tex, texCoord, dist , 100, 100,5) * lightCalculation();
+		//gl_FragColor = mainColor * vColor * depthBlur(tex, texCoord, dist , 100, 100, 5) * lightCalculation();
+		vec2 mainTexCoordRepeat = vec2(texCoord.x * texRepeat.x , texCoord.y * texRepeat.y);
+		gl_FragColor = mainColor * vColor * texture2D(tex, mainTexCoordRepeat) * lightCalculation();
 		//fog
 		gl_FragColor = mix(vec4(fogColor, 1.0), gl_FragColor, vec4(fog));
 		//specular

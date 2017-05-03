@@ -15,7 +15,7 @@ public class RendererGameObject extends GameObject{
 	
 	public void update()
 	{
-		
+		super.update();
 	}
 	
 	public void addToScene(Scene scene)

@@ -25,7 +25,10 @@ public class Game {
 		
 		cam = new CustomCamera();
 		cam.transform.position.y += 50;
-		cam.setPerspectiveProjection(75.0f, 0.1f, 1000.0f);
+		cam.setPerspectiveProjection(75.0f, 2.5f, 2250.0f);
+		
+		GameObject terrain = FullGameObject.loadObject("res/gameobjects/terrainTest.txt", new Vector3(0,-50,0));
+		terrain.addToScene(activeScene);
 		
 		GameObject testObj = FullGameObject.loadObject("res/gameobjects/rocks.txt");
 		testObj.addToScene(activeScene);
@@ -37,7 +40,7 @@ public class Game {
 		testObj3.addToScene(activeScene);
 		
 		
-		Renderer sky = new SkyBoxRenderer("/textures/skyBoxLayout.png");
+		Renderer sky = new SkyBoxRenderer("/textures/sky1.png");
 		
 		activeScene.addRenderer(sky);
 		activeScene.addGameObject(cam);
@@ -53,7 +56,6 @@ public class Game {
 	{
 		activeScene.render();
 	}
-	
 	
 	public static Scene getActiveScene()
 	{

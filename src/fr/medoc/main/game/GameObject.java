@@ -1,5 +1,7 @@
 package fr.medoc.main.game;
 
+import java.util.LinkedList;
+
 import fr.medoc.main.math.Transform;
 
 /**
@@ -14,6 +16,7 @@ import fr.medoc.main.math.Transform;
 public class GameObject {
 	public Transform transform = new Transform();
 	public String name = "gameobject";
+	public LinkedList<GameObjectComponent> components = new LinkedList<GameObjectComponent>();
 	
 	public GameObject()
 	{
@@ -21,7 +24,10 @@ public class GameObject {
 	
 	public void update()
 	{
-		
+		for(GameObjectComponent i : components)
+		{
+			i.update();
+		}
 	}
 	
 	public void addToScene(Scene scene)

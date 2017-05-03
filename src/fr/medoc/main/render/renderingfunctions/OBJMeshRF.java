@@ -19,7 +19,7 @@ public class OBJMeshRF implements RenderingFunction{
 	private String path;
 	private float scaleFactor;
 	
-	public static final OBJMeshRF skyboxMesh = new OBJMeshRF("/meshes/skybox.obj",500);
+	public static final OBJMeshRF skyboxMesh = new OBJMeshRF("/meshes/skybox.obj", 1000);
 	public static HashMap<String,OBJMeshRF> meshes = new HashMap<String,OBJMeshRF>();
 	
 	public static void loadMeshes()

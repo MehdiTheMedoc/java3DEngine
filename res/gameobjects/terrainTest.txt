@@ -1,12 +1,14 @@
 name: rocks_ground
 type: colliderRenderer
-renderer.texture: rocks
-renderer.normal: rocksnor
+renderer.texture: sand
+renderer.normal: sand_nor
 renderer.type: heightmap
 renderer.heightmaptex: /textures/heightmap.png
-renderer.heightmap.scale: 1 5 1
+renderer.heightmap.scale: 10 100 10
 renderer.shaderSpecular: 0.5
-renderer.shaderHardness: 100
-renderer.normalFactor: 0.25
+renderer.shaderHardness: 25
+renderer.normalFactor: 1
+renderer.norUVRepeat: 10 10
+renderer.texUVRepeat: 10 10
 collider.scale: 128 1 128
 collider.center: 64 0.5 64

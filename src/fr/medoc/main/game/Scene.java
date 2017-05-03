@@ -17,11 +17,11 @@ public class Scene {
 	private CollisionDetectionAlgorithm collisions;
 	
 	public float fog_density = 0.0015f;
-	public Vector3 fog_color = new Vector3(1,1,1);
+	public Vector3 fog_color = new Vector3(0.36862745098,0.36862745098,0.43137254902);
 	public boolean enableFog = true;
 	public float ambientLightIntensity = 0.25f;
-	public Vector3 sunLightDirection = new Vector3(0,-1,1).normalized();
-	public float sunLightIntensity = 1.5f;
+	public Vector3 sunLightDirection = new Vector3(1,-0.3,1).normalized();
+	public float sunLightIntensity = 2f;
 	
 	public Scene(CollisionDetectionAlgorithm colAlg)
 	{

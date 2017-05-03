@@ -39,6 +39,7 @@ public class FullGameObject extends ColliderRendererGameObject{
 		float hmscalefactor = 1;
 		Vector3 collScale = new Vector3(1,1,1);
 		Vector3 collCenter = new Vector3();
+		Vector3 hmScale = new Vector3(1,1,1);
 		OBJMeshRF mesh = null;
 		String heightmaptex = null;
 		float spec = 0.5f;
@@ -76,9 +77,11 @@ public class FullGameObject extends ColliderRendererGameObject{
 		        else if(parse[0].equals("renderer.texUVRepeat:"))
 		        	texuv = new Vector2f(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]));
 		        else if(parse[0].equals("renderer.norUVRepeat:"))
-		        	texuv = new Vector2f(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]));
+		        	noruv = new Vector2f(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]));
 		        else if(parse[0].equals("renderer.heightmap.scaleFactor:"))
 		        	hmscalefactor = Float.parseFloat(parse[1]);
+		        else if(parse[0].equals("renderer.heightmap.scale:"))
+		        	hmScale = new Vector3(Float.parseFloat(parse[1]) , Float.parseFloat(parse[2]), Float.parseFloat(parse[3]));
 		        else if(parse[0].equals("renderer.shaderSpecular:"))
 		        	spec = Float.parseFloat(parse[1]);
 		        else if(parse[0].equals("renderer.hardnessSpecular:"))
@@ -107,7 +110,7 @@ public class FullGameObject extends ColliderRendererGameObject{
 			Renderer rend = null;
 			if(rendererType == 0)
 			{
-				rend = new Renderer(tex, nor, new HeightMapRF(hmscalefactor,heightmaptex));
+				rend = new Renderer(tex, nor, new HeightMapRF(hmScale,heightmaptex));
 			}else if(rendererType == 1)
 			{
 				rend = new MeshRenderer(mesh,tex);

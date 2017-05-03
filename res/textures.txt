@@ -1,5 +1,7 @@
 default default.png
 default_nor defaultNor.png
+sand terrain/sand.jpg
+sand_nor terrain/sand_nor.jpg
 bube bube.png
 grass grass.png
 rocks rocks.png
