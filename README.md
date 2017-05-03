@@ -18,8 +18,7 @@ added a way to load gameobjects presets and instantiate them in a scene.
 
 # Features
 
-+ graphics
-
+GRAPHICS
 - textures
 - glsl shader handling
 - sun light diffuse
@@ -28,19 +27,16 @@ added a way to load gameobjects presets and instantiate them in a scene.
 - skybox
 - normal mapping
 
-+ core
-
+CORE
 - frames and tick gestion
 - transformations on gameobjects
 
-+ programmer side
-
+PROGRAMER SIDE
 - heightmap loading and rendering
 - OBJ mesh loading and rendering
 - gameobject preset loading
 
-+ gameplay
-
+GAMEPLAY
 - scenes gestion
 - basic boundbox collision detection
 
