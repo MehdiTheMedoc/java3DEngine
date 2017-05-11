@@ -22,6 +22,8 @@ public class HeightMapRF implements RenderingFunction{
 	String file;
 	boolean computeColors = false;
 	Vector3 hmScale;
+	int width;
+	int height;
 	
 	public HeightMapRF(Vector3 hmScale, String file, boolean computeColors)
 	{
@@ -46,13 +48,15 @@ public class HeightMapRF implements RenderingFunction{
 	}
 	
 	
-	public static void GenerateHeightMap(Vector3 position, Vector3 scale , String file, boolean computeColors)
+	public static void GenerateHeightMap(Vector3 position, Vector3 hmscale , String file, boolean computeColors)
 	{
 		BufferedImage map = ImageUtil.loadImage(file);
 		
 		int width = map.getWidth();
 		int height = map.getHeight();
 		
+		
+		Vector3 scale = new Vector3(hmscale.x / (float)width, hmscale.y, hmscale.z / (float)height);
 		Vector3[] normals = new Vector3[width*height];
 		
 		glPushMatrix();

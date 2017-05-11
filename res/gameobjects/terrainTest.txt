@@ -1,14 +1,15 @@
 name: rocks_ground
-type: colliderRenderer
-renderer.texture: sand
-renderer.normal: sand_nor
-renderer.type: heightmap
-renderer.heightmaptex: /textures/heightmap.png
-renderer.heightmap.scale: 10 100 10
-renderer.shaderSpecular: 0.5
-renderer.shaderHardness: 25
-renderer.normalFactor: 1
-renderer.norUVRepeat: 10 10
-renderer.texUVRepeat: 10 10
-collider.scale: 128 1 128
-collider.center: 64 0.5 64
+component_number: 1
+component_data: 0_type=RENDERER
+component_data: 0_renderer.texture=sand
+component_data: 0_renderer.normalmap=sand_nor
+component_data: 0_renderer.heightmap.scaleFactor=1000,100,1000
+component_data: 0_renderer.heightmaptex=/textures/heightmap.png
+component_data: 0_renderer.texUVRepeat=10,10
+component_data: 0_renderer.norUVRepeat=10,10
+component_data: 0_renderer.shaderSpecular=0.8
+component_data: 0_renderer.shaderHardness=25
+component_data: 0_renderer.normalFactor=1
+component_data: 1_type=HEIGHTMAPCOLLIDER
+component_data: 1_heightmapcollider.heightmaptex=/textures/heightmap.png
+component_data: 1_heightmapcollider.scaleFactor=1000,100,1000

@@ -18,6 +18,7 @@ handles :
 
 
 uniform sampler2D tex;
+uniform sampler2D texLR;
 uniform sampler2D normal;
 uniform float normalFactor;
 uniform int effects;
@@ -27,6 +28,7 @@ uniform float specular;
 uniform float fogDensity;
 uniform vec3 fogColor;
 uniform vec3 sunLightDir;
+uniform vec4 sunColor;
 uniform float sunLightIntensity;
 uniform vec3 cameraPosition;
 uniform float ambientLightIntensity;
@@ -40,8 +42,9 @@ varying vec4 vColor;
 varying vec3 vNormal;
 
 vec3 finalNormal;
+float distanceFilterPower;
 
-
+//generate a rotationMatrix according to an axis and an angle. Veeeery useful when it comes to rotating vectors
 mat4 rotationMatrix(vec3 axis, float angle)
 {
     axis = normalize(axis);
@@ -55,7 +58,20 @@ mat4 rotationMatrix(vec3 axis, float angle)
                 0.0,                                0.0,                                0.0,                                1.0);
 }
 
+//calculate the distance power, that will be used by some function like texture filter
+void setdistanceFilterPower(float dist, float start, float depth)
+{
+	distanceFilterPower = clamp(dist-start, 0.0, depth+start)/((depth+start));
+}
 
+//mixes two textures according to the distance power calculated early
+vec4 getTextureColorWithDistanceFilter(vec4 texA, vec4 texB)
+{
+	return mix(texA,texB, distanceFilterPower);	
+}
+
+
+//compute the new normal according to the normal map
 vec3 finalNormalCalculation(vec3 normalvec, vec3 normaltexRGB)
 {
 	if(normalFactor > 0.1 || normalFactor < -0.1)
@@ -63,19 +79,18 @@ vec3 finalNormalCalculation(vec3 normalvec, vec3 normaltexRGB)
 		vec3 orthonormalvec1 = normalize(vec3(1.0/normalvec.x , 1.0/normalvec.y, -2.0/normalvec.z));
 		vec3 orthonormalvec2 = cross(normalvec,orthonormalvec1);
 		
-		/*vec4 res = rotationMatrix(orthonormalvec1, (normaltexRGB.r*2-1)*0.1) * vec4(normalvec,0);
-		res = rotationMatrix(orthonormalvec1, (normaltexRGB.g*2-1)*0.1) * res;*/
+		float fac = 1 - distanceFilterPower; //decrease normal mapping power by distance
 		
-		vec4 res = rotationMatrix(vec3(1,0,0), (normaltexRGB.g*2-1)*normalFactor) * vec4(normalvec,0);
-		res = rotationMatrix(vec3(0,1,0), (normaltexRGB.r*2-1)*normalFactor) * res;
-		res = rotationMatrix(vec3(0,0,1), ((normaltexRGB.r + normaltexRGB.r)*2 - 2)*normalFactor) * res;
+		vec4 res = rotationMatrix(vec3(1,0,0), (normaltexRGB.g*2-1)*normalFactor*fac) * vec4(normalvec,0);
+		res = rotationMatrix(vec3(0,1,0), (normaltexRGB.r*2-1)*normalFactor*fac) * res;
+		res = rotationMatrix(vec3(0,0,1), ((normaltexRGB.r + normaltexRGB.r)*2 - 2)*normalFactor*fac) * res;
 		
 		return res.xyz;
 	}
 	return normalvec;
 }
 
-
+//OBSELETE : not optimized, not accurate function to make a texture filter
 vec4 depthBlur(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, float depth, float iterations)
 {
 	float power = clamp(dist-start, 0.0, depth+start)/((depth+start)*20);
@@ -99,6 +114,7 @@ vec4 depthBlur(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, fl
 	return res;
 }
 
+//OBSELETE : fade texture with a plain color according to distance
 vec4 depthFade(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, float depth)
 {
 	float power = clamp(dist-start, 0.0, depth+start)/((depth+start));
@@ -106,41 +122,40 @@ vec4 depthFade(sampler2D mainTex, vec2 mainTexCoord, float dist, float start, fl
 	return mix(res,texture2D(mainTex, vec2(0.5,0.5)), power );
 }
 
-
+//calculate diffuse light on this fragment
 float lightCalculation()
 {
 	return clamp(dot(finalNormal, -sunLightDir)*sunLightIntensity, ambientLightIntensity, 2.0);
-	/*vec3 L = normalize(vec3(0,0,1000) - v);   
-	float Idiff = max(dot(N,L), 0.0);  
-	return clamp(Idiff, 0.0, 1.0);*/
 }
 
+//calculates specular light on this fragment
 float specularCalculation()
 {  
-	//return pow(max(0.0, dot(reflect(-ViewSunLightDir, vViewNormal), normalize(view.xyz))), 100);
-	//return 0;
 	return pow(max(0.0, dot(reflect(-sunLightDir, finalNormal), normalize(fragPos.xyz - cameraPosition))), hardness)*specular*sunLightIntensity;
 }
 
 void main() {
 	if(effects == 0)
 	{
-		vec2 normalCoordRepeat = vec2(texCoord.x * normalRepeat.x , texCoord.y * normalRepeat.y);
-		//finalNormal = normalize( vNormal + (normalize(texture2D(normal, normalCoordRepeat).rgb) * 2 - 1));
-		finalNormal = finalNormalCalculation(vNormal, normalize(texture2D(normal, normalCoordRepeat).rgb));
 		float dist = length(view);
 		float fog = exp(-dist * fogDensity);
 		fog = clamp(fog, 0.0, 1.0);
 		
-		//diffuse color + filtered texture + diffuse light
-		//gl_FragColor = mainColor * vColor * depthBlur(tex, texCoord, dist , 100, 100, 5) * lightCalculation();
+		setdistanceFilterPower(dist, 0, 250);
+		
+		vec2 normalCoordRepeat = vec2(texCoord.x * normalRepeat.x , texCoord.y * normalRepeat.y);
+		finalNormal = finalNormalCalculation(vNormal, normalize(texture2D(normal, normalCoordRepeat)).rgb);
+		
 		vec2 mainTexCoordRepeat = vec2(texCoord.x * texRepeat.x , texCoord.y * texRepeat.y);
-		gl_FragColor = mainColor * vColor * texture2D(tex, mainTexCoordRepeat) * lightCalculation();
+		//color, vertex color, texture, diffuse light
+		gl_FragColor = mainColor * vColor * getTextureColorWithDistanceFilter(texture2D(tex, mainTexCoordRepeat), texture2D(texLR, mainTexCoordRepeat)) * lightCalculation() * sunColor;
 		//fog
 		gl_FragColor = mix(vec4(fogColor, 1.0), gl_FragColor, vec4(fog));
 		//specular
-		gl_FragColor = mix(gl_FragColor, vec4(1,1,1,1), specularCalculation());
+		gl_FragColor = gl_FragColor + sunColor * specularCalculation();
 		
+		
+		//final clamp to prevent wtf colors
 		gl_FragColor = clamp(gl_FragColor,0,1);
 	}
 	else if(effects == 1)

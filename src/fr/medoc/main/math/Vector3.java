@@ -29,6 +29,11 @@ public class Vector3 {
 		this.z = (float)z;
 	}
 	
+	public Vector3(Vector3f v)
+	{
+		this(v.x, v.y, v.z);
+	}
+	
 	public Vector3()
 	{
 		this(0, 0, 0);
@@ -73,6 +78,14 @@ public class Vector3 {
 		this.z *= val;
 		
 		return this;
+	}
+	
+	
+	public static Vector3 cross(Vector3 a, Vector3 b)
+	{
+		Vector3f res = new Vector3f();
+		Vector3f.cross(a.toVector3f(), b.toVector3f(), res);
+		return new Vector3(res);
 	}
 	
 	public Vector3 sub(Vector3 other)

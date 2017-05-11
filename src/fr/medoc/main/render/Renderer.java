@@ -5,17 +5,19 @@ import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.util.vector.Vector2f;
 
 import fr.medoc.main.game.Game;
+import fr.medoc.main.game.GameObjectComponent;
+import fr.medoc.main.game.Scene;
 import fr.medoc.main.math.ARGBColor;
 import fr.medoc.main.math.Transform;
 import fr.medoc.main.math.Vector3;
 import fr.medoc.main.render.renderingfunctions.RenderingFunction;
 import fr.medoc.main.render.texture.Texture;
 
-public class Renderer {
+public class Renderer implements GameObjectComponent{
 	
 	public Transform transform = new Transform();
 	public int shaderEffects = 0; // 0:all; 1:none;
-	public Texture texture;
+	public Texture texture = Texture.DEFAULT;
 	public Vector2f texUVRepeat = new Vector2f(1,1);
 	public Texture normal = Texture.DEFAULT_NORMAL;
 	public Vector2f norUVRepeat = new Vector2f(1,1);
@@ -131,6 +133,7 @@ public class Renderer {
 		Shader.MAIN.setUniform("fogDensity", Game.getActiveScene().fog_density);
 		Shader.MAIN.setUniform("cameraPosition", transform.transformPosition2(Game.getActiveScene().getActiveCamera().transform.position));
 		Shader.MAIN.setUniform("sunLightDir", transform.transformDirection2(Game.getActiveScene().sunLightDirection));
+		Shader.MAIN.setUniform("sunColor", Game.getActiveScene().sunColor);
 		Shader.MAIN.setUniform("sunLightIntensity", Game.getActiveScene().sunLightIntensity);
 		Shader.MAIN.setUniform("ambientLightIntensity", Game.getActiveScene().ambientLightIntensity);
 		Shader.MAIN.setUniform("texRepeat", texUVRepeat);
@@ -139,8 +142,9 @@ public class Renderer {
 
 		
 		Shader.MAIN.bind();
-		texture.bind(0,"tex");
-		normal.bind(1,"normal");
+		texture.bindHighRes(0,"tex");
+		texture.bindLowRes(1,"texLR");
+		normal.bindHighRes(2,"normal");
 		
 		glPushMatrix();
 		transform.glTransform();
@@ -213,5 +217,15 @@ public class Renderer {
 			glEnd();
 		
 		glPopMatrix();
+	}
+
+	@Override
+	public void update() {
+		//nothing to do here
+	}
+
+	@Override
+	public void addToScene(Scene s) {
+		s.addRenderer(this);
 	}
 }

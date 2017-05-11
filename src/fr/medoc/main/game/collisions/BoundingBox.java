@@ -3,7 +3,7 @@ package fr.medoc.main.game.collisions;
 import fr.medoc.main.math.Vector3;
 
 public class BoundingBox {
-	private Vector3 center;
+	public Vector3 center;
 	public Collider collider;
 	public Vector3 scale; // |<- scale/2 -> + <- scale/2 ->|
 	

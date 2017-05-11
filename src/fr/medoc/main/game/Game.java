@@ -27,6 +27,14 @@ public class Game {
 		cam.transform.position.y += 50;
 		cam.setPerspectiveProjection(75.0f, 2.5f, 2250.0f);
 		
+		GameObject test = new GameObject();
+		test.addComponent(new Renderer(Texture.DEFAULT, OBJMeshRF.meshes.get("suzanne")));
+		test.addToScene(Game.getActiveScene());
+		
+		GameObject terrain = GameObject.loadObject("res/gameobjects/terrainTest.txt", new Vector3(0,-50,0));
+		terrain.addToScene(Game.getActiveScene());
+		
+		/*
 		GameObject terrain = FullGameObject.loadObject("res/gameobjects/terrainTest.txt", new Vector3(0,-50,0));
 		terrain.addToScene(activeScene);
 		
@@ -38,7 +46,7 @@ public class Game {
 		
 		GameObject testObj3 = FullGameObject.loadObject("res/gameobjects/suzanne.txt");
 		testObj3.addToScene(activeScene);
-		
+		*/
 		
 		Renderer sky = new SkyBoxRenderer("/textures/sky1.png");
 		

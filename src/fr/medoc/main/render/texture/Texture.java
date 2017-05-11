@@ -28,7 +28,9 @@ import fr.medoc.main.render.Shader;
 
 public class Texture {
 	private int id;
-	private int width, height;
+	private int lowresId;
+	private int lowresReductionFactor = 10;
+	private int width, height, widthLowRes, heightLowRes;
 	
 	public static final Texture DEFAULT = new Texture("/textures/default.png");
 	public static final Texture DEFAULT_NORMAL = new Texture("/textures/defaultNor.png");
@@ -65,10 +67,16 @@ public class Texture {
 		width = image.getWidth();
 		height = image.getHeight();
 		
+		widthLowRes = width / lowresReductionFactor;
+		heightLowRes = height / lowresReductionFactor;
+		
+		int squaredlowresReductionFactor = lowresReductionFactor*lowresReductionFactor;
+		
 		pixels = new int[width*height];
 		image.getRGB(0, 0, width, height, pixels, 0, width);
 		
 		int[] data = new int[width*height];
+		int[] dataLowRes = new int[widthLowRes * heightLowRes];
 		
 		for( int i=0; i<data.length; i++)
 		{
@@ -78,6 +86,10 @@ public class Texture {
 			int b = (pixels[i] & 0xff);
 			
 			data[i] = a << 24 | b << 16 | g << 8 | r;
+			if(i%squaredlowresReductionFactor == 0 && i/squaredlowresReductionFactor < dataLowRes.length)
+			{
+				dataLowRes[i/squaredlowresReductionFactor] = a << 24 | b << 16 | g << 8 | r;
+			}
 		}
 		
 		int id = glGenTextures();
@@ -93,6 +105,20 @@ public class Texture {
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		
 		this.id = id;
+		
+		int idlr = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, idlr);
+		
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+		
+		IntBuffer bufferlr = BufferUtils.createIntBuffer(dataLowRes.length);
+		bufferlr.put(dataLowRes);
+		bufferlr.flip();
+		
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, widthLowRes, heightLowRes, 0, GL_RGBA, GL_UNSIGNED_BYTE, bufferlr);
+		
+		this.lowresId = idlr;
 	}
 	
 	public int getWidth()
@@ -105,11 +131,19 @@ public class Texture {
 		return height;
 	}
 	
-	public void bind(int activeTextureId, String name)
+	public void bindHighRes(int activeTextureId, String name)
 	{
 		int texLoc = glGetUniformLocation(Shader.MAIN.program, name);
 		glUniform1i(texLoc, activeTextureId);
 		glActiveTexture(GL_TEXTURE0 + activeTextureId);
 		glBindTexture(GL_TEXTURE_2D, id);
+	}
+	
+	public void bindLowRes(int activeTextureId, String name)
+	{
+		int texLoc = glGetUniformLocation(Shader.MAIN.program, name);
+		glUniform1i(texLoc, activeTextureId);
+		glActiveTexture(GL_TEXTURE0 + activeTextureId);
+		glBindTexture(GL_TEXTURE_2D, lowresId);
 	}
 }

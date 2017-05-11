@@ -35,14 +35,9 @@ public class ColliderPacket {
 			a = colliders.get(i);
 			
 			for(int j=i+1; j<colliders.size(); j++)
-			{
-				
+			{	
 				b = colliders.get(j);
-				if(a.boundingBox.boundingBoxCollision(b.boundingBox))
-				{
-					a.addCollision(b);
-					b.addCollision(a);
-				}
+				a.checkCollision(b);
 			}
 		}
 		colliders.clear();

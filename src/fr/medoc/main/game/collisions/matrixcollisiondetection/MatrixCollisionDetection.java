@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import fr.medoc.main.game.collisions.Collider;
 import fr.medoc.main.game.collisions.CollisionDetectionAlgorithm;
+import fr.medoc.main.game.collisions.HeightmapCollider;
 
 public class MatrixCollisionDetection implements CollisionDetectionAlgorithm{
 	
 	private ArrayList<Collider> colliders = new ArrayList<Collider>();
+	private ArrayList<HeightmapCollider> heightmapcolliders = new ArrayList<HeightmapCollider>();
 	private ColliderPacket[][] colliderMatrix;
 	
 	private float xmin = -5000;
@@ -89,6 +91,12 @@ public class MatrixCollisionDetection implements CollisionDetectionAlgorithm{
 	private int indexZ(float z)
 	{
 		return (int) ((z - zmin)/(zmax-zmin)*resolutionZ);
+	}
+
+
+	@Override
+	public void addHeightmapCollider(HeightmapCollider collider) {
+		heightmapcolliders.add(collider);
 	}
 
 }

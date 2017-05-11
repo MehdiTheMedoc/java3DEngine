@@ -91,7 +91,7 @@ public class Transform {
 		glTranslatef(position.x, position.y, position.z);
 	}
 	
-	public Vector3 transformDirection(Vector3 direction)
+	public Vector3 transformDirection(Vector3 direction)//local to global
 	{
 		Vector3 res = Vector3.rotateAround(direction, Vector3.RIGHT, -eulerAngles.x);
 		res = Vector3.rotateAround(res, Vector3.UP, -eulerAngles.y);
@@ -99,7 +99,7 @@ public class Transform {
 		return res;
 	}
 	
-	public Vector3 transformDirection2(Vector3 direction)
+	public Vector3 transformDirection2(Vector3 direction)//global to local
 	{
 		Vector3 res = Vector3.rotateAround(direction, Vector3.RIGHT, eulerAngles.x);
 		res = Vector3.rotateAround(res, Vector3.UP, eulerAngles.y);
@@ -109,12 +109,13 @@ public class Transform {
 	
 	public Vector3 transformPosition(Vector3 position)
 	{
-		Vector3 res = Vector3.sub(position, this.position);
-		res = Vector3.rotateAround(res, Vector3.RIGHT, -eulerAngles.x);
+		Vector3 res = Vector3.rotateAround(position, Vector3.RIGHT, -eulerAngles.x);
 		res = Vector3.rotateAround(res, Vector3.UP, -eulerAngles.y);
 		res = Vector3.rotateAround(res, Vector3.FORWARD, -eulerAngles.z);
+		res = Vector3.add(res, this.position);
 		return res;
 	}
+	
 	
 	public Vector3 transformPosition2(Vector3 position)
 	{
