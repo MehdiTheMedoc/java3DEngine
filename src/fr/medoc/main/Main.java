@@ -18,6 +18,7 @@ public class Main {
 	Game game;
 
 	public Main() {
+		System.setProperty("org.lwjgl.librarypath", new File("lib\\lwjgl-2.9.3\\native\\windows").getAbsolutePath());
 		DisplayManager.create(640, 480, "Bubune 3D");
 		game = new Game();
 	}
